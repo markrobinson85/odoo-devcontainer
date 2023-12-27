@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo chown -R vscode:vscode /workspace
+#sudo chown -R vscode:vscode /workspace
 
 project_dir=/workspace/
 version="13.0"
@@ -113,7 +113,9 @@ source /workspace/venv/bin/activate
 
 pip3 install --upgrade pip
 pip3 install wheel matplotlib pydevd
-pip3 install -r /workspace/odoo/requirements.txt
+if [ -f "/workspace/odoo/requirements.txt" ]; then
+  pip3 install -r /workspace/odoo/requirements.txt
+fi
 if [ -f "/workspace/project-addons/requirements.txt" ]; then
   pip3 install -r /workspace/project-addons/requirements.txt
 fi
