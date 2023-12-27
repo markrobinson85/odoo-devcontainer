@@ -21,6 +21,9 @@
 		// Enable container access to SSH and AWS credentials in the container environment.
 		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/root/.ssh,readonly,type=bind",
 		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.aws,target=/root/.aws,readonly,type=bind",
+		// Store ssh keys temporarily in the container using a tmpfs volume.
+		"type=tmpfs,destination=/home/vscode/.ssh",
+		"type=tmpfs,destination=/home/vscode/.aws",
 //		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/vscode/.ssh,readonly,type=bind",
 //		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.aws,target=/home/vscode/.aws,readonly,type=bind",
 		// Persist bash history between rebuilds.
@@ -40,6 +43,6 @@
 	// "customizations": {},
 
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-//	"remoteUser": "vscode",
-//	"containerUser": "vscode",
+	"remoteUser": "vscode",
+	"containerUser": "vscode",
 }

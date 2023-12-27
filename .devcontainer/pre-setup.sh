@@ -1,6 +1,10 @@
 #!/bin/bash
 
-#sudo chown -R vscode:vscode /workspace
+sudo chown -R vscode:vscode /workspace
+sudo cp -r /root/.ssh /home/vscode/
+sudo chown -R vscode:vscode /home/vscode/.ssh
+sudo chmod -R u=rw,go= /home/vscode/.ssh
+sudo chmod 700 ~/.ssh/
 
 project_dir=/workspace/
 version="13.0"
