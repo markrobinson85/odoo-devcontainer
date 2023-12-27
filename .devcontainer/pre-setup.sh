@@ -1,5 +1,7 @@
 #!/bin/bash
 
+su vscode
+
 project_dir=/workspace/
 version="13.0"
 
