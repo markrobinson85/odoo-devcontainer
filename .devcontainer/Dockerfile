@@ -20,4 +20,6 @@ RUN rm wkhtmltox_0.12.6-1.focal_amd64.deb
 
 RUN npm install -g less less-plugin-clean-css
 
+USER vscode
+
 CMD ["bash"]
