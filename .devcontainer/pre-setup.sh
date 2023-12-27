@@ -14,9 +14,7 @@ mkdir /workspace/.idea/runConfigurations
 
 cd /workspace
 git submodule init
-
-# TODO: Figure out permission issue on ssh key mount.
-sudo git submodule update
+git submodule update
 
 if [ ! -f "/workspace/.idea/runConfigurations/odoo_bin_single.xml" ]; then
 echo "Creating debug configurations for Pycharm in ./.idea/runConfigurations/odoo_bin_single.xml"
