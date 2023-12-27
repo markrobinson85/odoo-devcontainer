@@ -8,6 +8,12 @@ version="13.0"
 mkdir /workspace/.idea
 mkdir /workspace/.idea/runConfigurations
 
+cd /workspace
+git submodule init
+
+# TODO: Figure out permission issue on ssh key mount.
+sudo git submodule update
+
 if [ ! -f "/workspace/.idea/runConfigurations/odoo_bin_single.xml" ]; then
 echo "Creating debug configurations for Pycharm in ./.idea/runConfigurations/odoo_bin_single.xml"
 cat >> /workspace/.idea/runConfigurations/odoo_bin_single.xml <<EOL
@@ -20,6 +26,7 @@ cat >> /workspace/.idea/runConfigurations/odoo_bin_single.xml <<EOL
       <env name="PYTHONUNBUFFERED" value="1" />
     </envs>
     <option name="SDK_HOME" value="./venv/bin/python" />
+    <option name="SDK_NAME" value="Python 3.8 (workspace)" />
     <option name="WORKING_DIRECTORY" value="\$PROJECT_DIR\$" />
     <option name="IS_MODULE_SDK" value="true" />
     <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -50,6 +57,7 @@ cat >> /workspace/.idea/runConfigurations/odoo_bin.xml <<EOL
       <env name="PYTHONUNBUFFERED" value="1" />
     </envs>
     <option name="SDK_HOME" value="./venv/bin/python" />
+    <option name="SDK_NAME" value="Python 3.8 (workspace)" />
     <option name="WORKING_DIRECTORY" value="\$PROJECT_DIR\$" />
     <option name="IS_MODULE_SDK" value="true" />
     <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -80,6 +88,7 @@ cat >> /workspace/.idea/runConfigurations/odoo_bin_test.xml <<EOL
       <env name="PYTHONUNBUFFERED" value="1" />
     </envs>
     <option name="SDK_HOME" value="./venv/bin/python" />
+    <option name="SDK_NAME" value="Python 3.8 (workspace)" />
     <option name="WORKING_DIRECTORY" value="\$PROJECT_DIR\$" />
     <option name="IS_MODULE_SDK" value="true" />
     <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -104,7 +113,7 @@ source /workspace/venv/bin/activate
 
 pip3 install --upgrade pip
 pip3 install wheel matplotlib pydevd
-#pip3 install -r /workspace/odoo/requirements.txt
+pip3 install -r /workspace/odoo/requirements.txt
 if [ -f "/workspace/project-addons/requirements.txt" ]; then
   pip3 install -r /workspace/project-addons/requirements.txt
 fi
