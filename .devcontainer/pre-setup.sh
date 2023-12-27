@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sudo chown -R vscode:vscode /workspace
+
 project_dir=/workspace/
 version="13.0"
 
