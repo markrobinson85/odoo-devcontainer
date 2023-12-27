@@ -9,7 +9,7 @@
 
     "workspaceFolder": "/workspace",
 
-    // Update the 'runArgs' list if you use a Docker Compose file.
+	// Features to add to the dev container. More info: https://containers.dev/features.
     "features": {
 		"ghcr.io/devcontainers/features/python:1": {
 			"installTools": true,
@@ -19,22 +19,22 @@
 
 	"mounts": [
 		// Enable container access to SSH and AWS credentials in the container environment.
-//		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/root/.ssh,type=bind,consistency=cached",
-//		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.aws,target=/root/.aws,type=bind,consistency=cached",
-		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=read-only",
-		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.aws,target=/home/vscode/.aws,type=bind,consistency=read-only",
+//		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/root/.ssh,type=bind",
+//		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.aws,target=/root/.aws,type=bind",
+		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/vscode/.ssh,type=bind",
+		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.aws,target=/home/vscode/.aws,type=bind",
 		// Persist bash history between rebuilds.
 		"source=projectname-bashhistory,target=/commandhistory,type=volume",
 	],
 
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
-
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
+	 "forwardPorts": [
+		 8069
+	 ],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"onCreateCommand": "bash /workspace/.devcontainer/pre-setup.sh",
+	"postAttachCommand": "source /workspace/venv/bin/activate",
 
 	// Configure tool-specific properties.
 	// "customizations": {},
