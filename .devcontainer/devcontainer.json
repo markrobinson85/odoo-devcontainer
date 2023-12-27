@@ -1,0 +1,44 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
+{
+	"name": "Odoo13-CNF",
+//    "dockerComposeFile": "docker-compose.yml",
+//    "service": "devcontainer",
+
+	"build": { "dockerfile": "Dockerfile" },
+
+    "workspaceFolder": "/workspace",
+
+    // Update the 'runArgs' list if you use a Docker Compose file.
+    "features": {
+		"ghcr.io/devcontainers/features/python:1": {
+			"installTools": true,
+			"version": "3.8"
+		}
+	},
+
+	"mounts": [
+		// Enable container access to SSH and AWS credentials in the container environment.
+		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/root/.ssh,type=bind,consistency=cached",
+		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.aws,target=/root/.aws,type=bind,consistency=cached",
+		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached",
+		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.aws,target=/home/vscode/.aws,type=bind,consistency=cached",
+		// Persist bash history between rebuilds.
+		"source=projectname-bashhistory,target=/commandhistory,type=volume",
+	],
+
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"onCreateCommand": "bash /workspace/.devcontainer/pre-setup.sh",
+
+	// Configure tool-specific properties.
+	// "customizations": {},
+
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	"remoteUser": "vscode"
+}
