@@ -1,5 +1,14 @@
 #!/bin/bash
 
+## ----------------------------------
+## VARIABLES
+## ----------------------------------
+project_dir=/workspace/
+version="13.0"
+
+## ----------------------------------
+## Pass keys to container vscode user.
+## ----------------------------------
 sudo chown -R vscode:vscode /workspace
 sudo cp -r /root/.ssh /home/vscode/
 sudo chown -R vscode:vscode /home/vscode/.ssh
@@ -7,9 +16,6 @@ sudo chmod -R u=rw,go= /home/vscode/.ssh
 sudo chmod 700 ~/.ssh/
 sudo mkdir -p ~/.cache/pip
 sudo chown -R vscode:vscode ~/.cache/pip
-
-project_dir=/workspace/
-version="13.0"
 
 mkdir /workspace/.idea
 mkdir /workspace/.idea/runConfigurations

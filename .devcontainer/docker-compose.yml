@@ -3,7 +3,7 @@ services:
   devcontainer:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: .devcontainer/Dockerfile
     volumes:
       - ~/.ssh:/home/vscode/.ssh:ro
       - ~/.aws:/home/vscode/.aws:ro
