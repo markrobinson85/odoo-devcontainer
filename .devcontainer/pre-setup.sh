@@ -37,25 +37,33 @@ git fetch --all
 repo_ready_for_removal=1
 
 # Check if local branches are up-to-date with remote
-for branch in $(git branch -r | grep -v HEAD); do
-    if git diff --quiet $branch $(git rev-parse --abbrev-ref HEAD); then
-        echo "Local branch $(git rev-parse --abbrev-ref HEAD) is not up-to-date with $branch."
-        repo_ready_for_removal=0
-        break
+for branch in $(git branch | sed 's/* //'); do
+    # Get the name of the remote tracking branch, if it exists
+    remote=$(git for-each-ref --format='%(upstream:short)' refs/heads/$branch)
+    if [ -n "$remote" ]; then
+        # Check if the local branch is behind its remote counterpart
+        if git log --oneline $branch..$remote | grep -q '.'; then
+            echo "Local branch $branch is behind its remote counterpart $remote."
+            repo_ready_for_removal=0
+        else
+            echo "Local branch $branch is up-to-date with $remote."
+        fi
     fi
 done
 
 # Check for a clean state
-if [ -n "$(git status --porcelain)" ]; then
+if [ -n "$(git status --porcelain -uno)" ]; then
     echo "Repository is not clean."
     repo_ready_for_removal=0
+else
+    echo "Repository is clean."
 fi
 
 # Remove .git directory if both conditions are met
 if [ $repo_ready_for_removal -eq 1 ]; then
     echo "Repository is clean and up-to-date. Proceeding to remove .git directory."
-    sudo rm -r /workspace/.git
-    sudo rm -r /workspace/.gitignore
+#    sudo rm -r /workspace/.git
+#    sudo rm -r /workspace/.gitignore
 else
     echo "Skipping the removal of .git directory."
 fi
