@@ -24,11 +24,10 @@
 		// Store ssh keys temporarily in the container using a tmpfs volume.
 		"type=tmpfs,destination=/home/vscode/.ssh",
 		"type=tmpfs,destination=/home/vscode/.aws",
-		"source=odoo-filestore,target=/home/vscode/.local/Odoo,filemode=0777,type=volume",
 //		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/vscode/.ssh,readonly,type=bind",
 //		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.aws,target=/home/vscode/.aws,readonly,type=bind",
 		// Persist bash history between rebuilds.
-		"source=projectname-bashhistory,target=/commandhistory,type=volume",
+		"source=odoo-bashhistory,target=/commandhistory,type=volume",
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.

@@ -20,6 +20,18 @@ RUN rm wkhtmltox_0.12.6-1.focal_amd64.deb
 
 RUN npm install -g less less-plugin-clean-css
 
-#USER vscode
+# Enable persisting of bash command history
+ARG USERNAME=vscode
+
+RUN SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.bash_history" \
+    && mkdir /commandhistory \
+    && touch /commandhistory/.bash_history \
+    && chown -R $USERNAME /commandhistory \
+    && echo "$SNIPPET" >> "/home/$USERNAME/.bashrc"
+
+USER vscode
+# Setup volume for Odoo data.
+RUN mkdir -p /home/vscode/.local/Odoo
+VOLUME /home/vscode/.local/Odoo
 
 CMD ["bash"]
