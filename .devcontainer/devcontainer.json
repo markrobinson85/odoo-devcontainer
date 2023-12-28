@@ -2,6 +2,10 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
 {
 	"name": "Odoo Dev Container",
+	"containerEnv": {
+		"PROJECT_SHORT_NAME": "dev",
+
+	},
 //    "dockerComposeFile": "docker-compose.yml",
 //    "service": "devcontainer",
 
@@ -10,15 +14,16 @@
     "workspaceFolder": "/workspace",
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
-    "features": {
-		"ghcr.io/devcontainers/features/python:1": {
-			"installTools": true,
-			"version": "3.8"
-		}
-	},
+//    "features": {
+//		"ghcr.io/devcontainers/features/python:1": {
+//			"installTools": true,
+//			"version": "3.8"
+//		}
+//	},
 
 	"mounts": [
 		// Enable container access to SSH and AWS credentials in the container environment.
+//		"source=${localEnv:HOME}${localEnv:USERPROFILE},target=/home/host_user,readonly,type=bind",
 		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/root/.ssh,readonly,type=bind",
 		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.aws,target=/root/.aws,readonly,type=bind",
 		// Store ssh keys temporarily in the container using a tmpfs volume.

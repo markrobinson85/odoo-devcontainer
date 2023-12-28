@@ -30,7 +30,7 @@ RUN SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhisto
     && echo "$SNIPPET" >> "/home/$USERNAME/.bashrc"
 
 ## -- TEMPORARY --
-## Install Postgres 15 into same container since docker-compose bug exists in JetBrains Gateway.
+## Install Postgres 15/Nginx into same container since docker-compose bug exists in JetBrains Gateway.
 RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
 RUN sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ focal-pgdg main" >> /etc/apt/sources.list.d/pgdg.list'
 RUN apt-get update && apt-get install -y postgresql-15 postgresql-client-15
@@ -44,7 +44,11 @@ RUN echo "listen_addresses='*'" >> /etc/postgresql/15/main/postgresql.conf
 
 USER postgres
 RUN /etc/init.d/postgresql start && \
-    psql --command "CREATE USER odoo WITH SUPERUSER PASSWORD 'development';"
+    psql --command "CREATE USER odoo WITH SUPERUSER PASSWORD 'odoo';"
+
+USER root
+RUN apt-get install -y nginx
+VOLUME ["/var/lib/nginx/cache/dev", "/var/log/nginx"]
 
 ## -- TEMPORARY --
 

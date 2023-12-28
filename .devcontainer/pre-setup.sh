@@ -19,6 +19,7 @@ sudo chmod -R u=rw,go= /home/vscode/.aws
 sudo chmod 700 ~/.ssh/
 sudo mkdir -p ~/.cache/pip
 sudo chown -R vscode:vscode ~/.cache/pip
+sudo ln -f /workspace/configs/nginx.conf /etc/nginx/sites-enabled/odoo-devcontainer.conf
 
 mkdir /workspace/.idea
 mkdir /workspace/.idea/runConfigurations
@@ -27,11 +28,37 @@ mkdir /workspace/.idea/runConfigurations
 # Then we update the remote fetch to include the branch we want to use.
 cd /workspace
 
-# Remove git folder.
-sudo rm -r /workspace/.git
-sudo rm -r /workspace/.gitignore
+## We check if the git repo is up to date or has changes staged/unstaged. We do this do
+# prevent removal of the .git directory, as we won't need it once we've pulled in our files.
+# Fetch updates from remote
+git fetch --all
 
-printenv
+# Initialize a flag to track the overall status
+repo_ready_for_removal=1
+
+# Check if local branches are up-to-date with remote
+for branch in $(git branch -r | grep -v HEAD); do
+    if git diff --quiet $branch $(git rev-parse --abbrev-ref HEAD); then
+        echo "Local branch $(git rev-parse --abbrev-ref HEAD) is not up-to-date with $branch."
+        repo_ready_for_removal=0
+        break
+    fi
+done
+
+# Check for a clean state
+if [ -n "$(git status --porcelain)" ]; then
+    echo "Repository is not clean."
+    repo_ready_for_removal=0
+fi
+
+# Remove .git directory if both conditions are met
+if [ $repo_ready_for_removal -eq 1 ]; then
+    echo "Repository is clean and up-to-date. Proceeding to remove .git directory."
+    sudo rm -r /workspace/.git
+    sudo rm -r /workspace/.gitignore
+else
+    echo "Skipping the removal of .git directory."
+fi
 
 echo "Cloning Odoo $version, Enterprise $version and odoo-stubs..."
 git clone --quiet git@github.com:odoo/odoo.git --depth 1 --branch $version /workspace/odoo &
