@@ -5,6 +5,8 @@ sudo cp -r /root/.ssh /home/vscode/
 sudo chown -R vscode:vscode /home/vscode/.ssh
 sudo chmod -R u=rw,go= /home/vscode/.ssh
 sudo chmod 700 ~/.ssh/
+sudo mkdir -p ~/.cache/pip
+sudo chown -R vscode:vscode ~/.cache/pip
 
 project_dir=/workspace/
 version="13.0"
@@ -12,9 +14,18 @@ version="13.0"
 mkdir /workspace/.idea
 mkdir /workspace/.idea/runConfigurations
 
+# TODO: There must be a better way to deal with this.
+# To speed up the process, we use a depth of 1 to pull a shallow clone of the repo.
+# Then we update the remote fetch to include the branch we want to use.
 cd /workspace
 git submodule init
-git submodule update
+git submodule update --depth 1 odoo
+git submodule update --depth 1 enterprise
+cd /workspace/odoo
+git config remote.origin.fetch +refs/heads/$version:refs/remotes/origin/$version
+cd /workspace/enterprise
+git config remote.origin.fetch +refs/heads/$version:refs/remotes/origin/$version
+git submodule update --remote --depth 1
 
 if [ ! -f "/workspace/.idea/runConfigurations/odoo_bin_single.xml" ]; then
 echo "Creating debug configurations for Pycharm in ./.idea/runConfigurations/odoo_bin_single.xml"
