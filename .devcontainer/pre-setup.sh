@@ -14,26 +14,23 @@ version="13.0"
 mkdir /workspace/.idea
 mkdir /workspace/.idea/runConfigurations
 
-# TODO: There must be a better way to deal with this.
 # To speed up the process, we use a depth of 1 to pull a shallow clone of the repo.
 # Then we update the remote fetch to include the branch we want to use.
 cd /workspace
 
-git submodule init
+# Remove git folder.
+sudo rm -r /workspace/.git
+sudo rm -r /workspace/.gitignore
 
-git submodule update --depth 1 odoo
-cd /workspace/odoo
-git config remote.origin.fetch +refs/heads/*:refs/remotes/origin/*
-git fetch --depth 1 origin $version
-git checkout $version && git pull
+echo "Cloning Odoo $version, Enterprise $version and odoo-stubs..."
+git clone --quiet git@github.com:odoo/odoo.git --depth 1 --branch $version /workspace/odoo &
+P1=$!
+git clone --quiet git@github.com:odoo/enterprise.git --depth 1 --branch $version /workspace/enterprise &
+P2=$!
+git clone --quiet https://github.com/odoo-ide/odoo-stubs.git --depth 1 -b version /workspace/odoo-stubs &
+P3=$!
 
-git submodule update --depth 1 enterprise
-cd /workspace/enterprise
-git config remote.origin.fetch +refs/heads/*:refs/remotes/origin/*
-git fetch --depth 1 origin $version
-git checkout $version && git pull
-
-#git submodule update --remote --depth 1
+wait $P1 $P2 $P3
 
 if [ ! -f "/workspace/.idea/runConfigurations/odoo_bin_single.xml" ]; then
 echo "Creating debug configurations for Pycharm in ./.idea/runConfigurations/odoo_bin_single.xml"
