@@ -31,6 +31,8 @@ cd /workspace
 sudo rm -r /workspace/.git
 sudo rm -r /workspace/.gitignore
 
+printenv
+
 echo "Cloning Odoo $version, Enterprise $version and odoo-stubs..."
 git clone --quiet git@github.com:odoo/odoo.git --depth 1 --branch $version /workspace/odoo &
 P1=$!
