@@ -27,7 +27,7 @@ git clone --quiet git@github.com:odoo/odoo.git --depth 1 --branch $version /work
 P1=$!
 git clone --quiet git@github.com:odoo/enterprise.git --depth 1 --branch $version /workspace/enterprise &
 P2=$!
-git clone --quiet https://github.com/odoo-ide/odoo-stubs.git --depth 1 -b version /workspace/odoo-stubs &
+git clone --quiet https://github.com/odoo-ide/odoo-stubs.git --depth 1 --branch $version /workspace/odoo-stubs &
 P3=$!
 
 wait $P1 $P2 $P3
