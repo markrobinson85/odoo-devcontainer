@@ -11,8 +11,11 @@ version="13.0"
 ## ----------------------------------
 sudo chown -R vscode:vscode /workspace
 sudo cp -r /root/.ssh /home/vscode/
+sudo cp -r /root/.aws /home/vscode/
 sudo chown -R vscode:vscode /home/vscode/.ssh
 sudo chmod -R u=rw,go= /home/vscode/.ssh
+sudo chown -R vscode:vscode /home/vscode/.aws
+sudo chmod -R u=rw,go= /home/vscode/.aws
 sudo chmod 700 ~/.ssh/
 sudo mkdir -p ~/.cache/pip
 sudo chown -R vscode:vscode ~/.cache/pip
@@ -43,7 +46,7 @@ echo "Creating debug configurations for Pycharm in ./.idea/runConfigurations/odo
 cat >> /workspace/.idea/runConfigurations/odoo_bin_single.xml <<EOL
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Odoo $version - Single Worker" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="false">
-    <module name="$project_dir" />
+    <module name="workspace" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
     <envs>
@@ -74,7 +77,7 @@ echo "Creating debug configurations for Pycharm in ./.idea/runConfigurations/odo
 cat >> /workspace/.idea/runConfigurations/odoo_bin.xml <<EOL
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Odoo $version" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="false">
-    <module name="$project_dir" />
+    <module name="workspace" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
     <envs>
@@ -105,7 +108,7 @@ echo "Creating debug configurations for Pycharm in ./.idea/runConfigurations/odo
 cat >> /workspace/.idea/runConfigurations/odoo_bin_test.xml <<EOL
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Odoo $version - Init Test" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="false">
-    <module name="$project_dir" />
+    <module name="workspace" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
     <envs>
