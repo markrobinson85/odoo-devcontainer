@@ -1,7 +1,7 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
 {
-	"name": "Odoo13-CNF",
+	"name": "Odoo Dev Container",
 //    "dockerComposeFile": "docker-compose.yml",
 //    "service": "devcontainer",
 
@@ -40,7 +40,7 @@
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"onCreateCommand": "bash /workspace/.devcontainer/pre-setup.sh",
-	"postAttachCommand": "source /workspace/venv/bin/activate",
+	"postAttachCommand": "bash /workspace/.devcontainer/post-attach.sh && source /workspace/venv/bin/activate",
 
 	// Configure tool-specific properties.
 	// "customizations": {},
