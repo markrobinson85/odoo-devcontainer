@@ -113,11 +113,11 @@ echo "Installing venv and requirements..."
 python3.8 -m venv /workspace/venv
 source /workspace/venv/bin/activate
 
-pip3 install --upgrade pip
-pip3 install wheel matplotlib pydevd
+pip install --upgrade pip
+pip install wheel matplotlib pydevd
 if [ -f "/workspace/odoo/requirements.txt" ]; then
-  pip3 install -r /workspace/odoo/requirements.txt
+  pip install -r /workspace/odoo/requirements.txt
 fi
 if [ -f "/workspace/project-addons/requirements.txt" ]; then
-  pip3 install -r /workspace/project-addons/requirements.txt
+  pip install -r /workspace/project-addons/requirements.txt
 fi
