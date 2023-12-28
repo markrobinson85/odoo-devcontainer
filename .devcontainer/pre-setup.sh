@@ -18,14 +18,22 @@ mkdir /workspace/.idea/runConfigurations
 # To speed up the process, we use a depth of 1 to pull a shallow clone of the repo.
 # Then we update the remote fetch to include the branch we want to use.
 cd /workspace
+
 git submodule init
+
 git submodule update --depth 1 odoo
-git submodule update --depth 1 enterprise
 cd /workspace/odoo
-git config remote.origin.fetch +refs/heads/$version:refs/remotes/origin/$version
+git config remote.origin.fetch +refs/heads/*:refs/remotes/origin/*
+git fetch --depth 1 origin $version
+git checkout $version && git pull
+
+git submodule update --depth 1 enterprise
 cd /workspace/enterprise
-git config remote.origin.fetch +refs/heads/$version:refs/remotes/origin/$version
-git submodule update --remote --depth 1
+git config remote.origin.fetch +refs/heads/*:refs/remotes/origin/*
+git fetch --depth 1 origin $version
+git checkout $version && git pull
+
+#git submodule update --remote --depth 1
 
 if [ ! -f "/workspace/.idea/runConfigurations/odoo_bin_single.xml" ]; then
 echo "Creating debug configurations for Pycharm in ./.idea/runConfigurations/odoo_bin_single.xml"
