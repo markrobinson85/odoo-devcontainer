@@ -32,12 +32,8 @@ RUN SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhisto
 ## -- TEMPORARY --
 ## Install Postgres 15 into same container since docker-compose bug exists in JetBrains Gateway.
 RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
-RUN apt-get install -y postgresql-15 postgresql-client-15
-RUN su -l postgres -c /usr/pgsql-15/bin/initdb
-
-USER postgres
-RUN /etc/init.d/postgresql start && \
-    psql --command "CREATE USER odoo WITH SUPERUSER PASSWORD 'development';" \
+RUN sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ focal-pgdg main" >> /etc/apt/sources.list.d/pgdg.list'
+RUN apt-get update && apt-get install -y postgresql-15 postgresql-client-15
 
 # Add VOLUMEs to allow backup of config, logs and databases
 VOLUME  ["/etc/postgresql", "/var/log/postgresql", "/var/lib/postgresql"]
@@ -45,6 +41,11 @@ VOLUME  ["/etc/postgresql", "/var/log/postgresql", "/var/lib/postgresql"]
 # Adjust PostgreSQL configuration to allow remote connections
 RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/15/main/pg_hba.conf
 RUN echo "listen_addresses='*'" >> /etc/postgresql/15/main/postgresql.conf
+
+USER postgres
+RUN /etc/init.d/postgresql start && \
+    psql --command "CREATE USER odoo WITH SUPERUSER PASSWORD 'development';"
+
 ## -- TEMPORARY --
 
 USER vscode
