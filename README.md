@@ -1,6 +1,8 @@
 
 # Odoo Dev Container
 
+![](.images/devcontainer-setup.png)
+
 ## Overview
 Odoo Dev Container is designed to streamline the setup process for developing Odoo modules using PyCharm Professional. 
 This container manages the complexities of setting up Odoo and its dependencies, including Postgres and Nginx, allowing 
@@ -17,7 +19,7 @@ This devcontainer will take care of the pain of setting up a local Odoo developm
 
 You can use JetBrains Gateway or PyCharm Professional to build and run PyCharm in a container.
 
-For use on a project, I recommend forking or cloning this repo and making changes to suit your needs. 
+For use on a project, I recommend forking or cloning this repo and making changes to suit your team's needs. 
 
 ## Prerequisites
 - [Docker](https://www.docker.com/)
@@ -40,12 +42,21 @@ For use on a project, I recommend forking or cloning this repo and making change
 ### Configuring the Project Interpreter
 The container should have prepared a venv for you automatically, but you will need to select it as the project interpreter within PyCharm.
 1. If in the lower right corner you see <No interpreter>, click on it.
+
+![](.images/add_local_interpreter.png)
 2. Click Add new interpreter > Add Local Interpreter.
+
+![](.images/select_existing_venv.png)
 3. On the Add Python Interpreter screen, select Existing > Click Ok.
 
-Next you'll need to set the interpreter on the built-in Run Configurations.
-1. From the PyCharm main screen, to the left of the Run button, click the dropdown menu and click Edit Configurations.
-2. Select one of the Run Configurations for Odoo.
+#### Configuring the Run Configurations
+
+![](.images/run_configurations.png)
+1. Next you'll need to set the interpreter on the built-in Run Configurations.
+2. From the PyCharm main screen, to the left of the Run button, click the dropdown menu and click Edit Configurations.
+3. Select one of the Run Configurations for Odoo.
+
+![](.images/run_config_interpreter.png)
 3. Where you see <No interpreter>, click on it and select the interpreter you just configured.
 
 ### Configuring the Database Connection
@@ -53,6 +64,8 @@ The container should have set up a database connection for you automatically, bu
 required to get the database driver installed and password authenticated.
 1. From the PyCharm main screen, click the Database icon on the upper right side of the screen.
 2. From the database pull out, you should see a connection to the Postgres database.
+
+![](.images/install-db-drivers.png)
 3. Right click on the connection and click Download Driver Files.
 4. The database drivers download and install very quickly.
 5. Right click again, and click Properties. 
@@ -63,6 +76,8 @@ required to get the database driver installed and password authenticated.
 1. **Clone and Modify**: Clone this repository and make your desired changes to the files within the .devcontainer 
 directory.
 2. **Add Custom Repositories**: Include your custom repositories in the _./devcontainer/extra-repos.sh_ file.
+
+![](.images/e9006d3a.png)
 3. **Testing Customizations**: In PyCharm, when you edit the devcontainer.json file, a block icon appears near the 
 opening curly bracket. Click this to access customization options. Select **_Create Container and Mount Sources_** for PyCharm 
 to rebuild the container with your changes, using a bind mount to include the current project directory.
