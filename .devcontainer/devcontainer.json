@@ -4,7 +4,7 @@
 	"name": "Odoo Dev Container", // Name your project here. For example, "Odoo - Client Name"
 	"containerEnv": {
 		"PROJECT_SHORT_NAME": "dev", // Shortcode for the project, used in config files and domain names (e.g., dev.odoo.test)
-		"PROJECT_SKIP_ENTERPRISE": "true", // Set to 'true' to skip cloning the Odoo enterprise repo in onCreateCommand
+		"PROJECT_SKIP_ENTERPRISE": "false", // Set to 'true' to skip cloning the Odoo enterprise repo in onCreateCommand
 		"PROJECT_VERSION": "17.0", // Odoo version. Used in runtime scripts. Keep in sync with build.args
 		"PROJECT_SKIP_POSTGRES": "false", // Set to 'true' to skip starting Postgres in postAttachCommand
 		"PROJECT_SKIP_NGINX": "false", // Set to 'true' to skip starting Nginx in postAttachCommand
