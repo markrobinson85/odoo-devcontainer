@@ -59,16 +59,18 @@ required to get the database driver installed and password authenticated.
 6. In the password field, enter the default password, odoo. Click Ok.
 
 ## Customizing the Dev Container
-You can clone this repo locally and make changes to the files in the .devcontainer directory. 
 
-When editing the devcontainer.json file, PyCharm will show a block icon near the opening curly bracket. 
-You can test your customizations by clicking this button and clicking _Build Container and Mount Sources_. 
-
-If you choose to _Build Container and Mount Sources_, PyCharm will build the container and bind mount the current project 
+1. **Clone and Modify**: Clone this repository and make your desired changes to the files within the .devcontainer 
 directory.
-
-For Windows users, Build Container and Mount Sources can come with IO performance issues, so should only be used for 
-testing customizations to the dev container. On Windows, use Build Container and Clone Sources for day-to-day development.
+2. **Add Custom Repositories**: Include your custom repositories in the _./devcontainer/extra-repos.sh_ file.
+3. **Testing Customizations**: In PyCharm, when you edit the devcontainer.json file, a block icon appears near the 
+opening curly bracket. Click this to access customization options. Select **_Create Container and Mount Sources_** for PyCharm 
+to rebuild the container with your changes, using a bind mount to include the current project directory.
+4. **Considerations for Windows and macOS Users**: Be aware that using **_Create Container and Mount Sources_** on Windows and 
+macOS may lead to I/O performance issues due to the containers running within a VM. This can make bind mounts less 
+efficient. While this method is suitable for testing container customizations, for day-to-day development, particularly 
+on Windows and macOS, use _**Create Container and Clone Sources**_ instead, which will put your source code in a volume. 
+This approach avoids the noted I/O issues. More details can be found in [Visual Studio Code's performance improvement guide](https://code.visualstudio.com/remote/advancedcontainers/improve-performance#_use-a-targeted-named-volume).
 
 #### Environment Variables
 - **PROJECT_SHORT_NAME**: Shortcode for the project, used in config files and domain names.
