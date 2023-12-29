@@ -1,25 +1,30 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
 {
-	"name": "Odoo Dev Container",
+	"name": "Odoo Dev Container", // Name your project here. For example, "Odoo - Client Name"
 	"containerEnv": {
-		"PROJECT_SHORT_NAME": "dev",
-
+		"PROJECT_SHORT_NAME": "dev", // Shortcode for the project, used in config files and domain names (e.g., dev.odoo.test)
+		"PROJECT_SKIP_ENTERPRISE": "true", // Set to 'true' to skip cloning the Odoo enterprise repo in onCreateCommand
+		"PROJECT_VERSION": "17.0", // Odoo version. Used in runtime scripts. Keep in sync with build.args
+		"PROJECT_SKIP_POSTGRES": "false", // Set to 'true' to skip starting Postgres in postAttachCommand
+		"PROJECT_SKIP_NGINX": "false", // Set to 'true' to skip starting Nginx in postAttachCommand
+		"PROJECT_KEEP_DOTGIT": "false", // Set to 'true' to keep the .git folder in the project directory, useful when customizing the dev container or using submodules.
 	},
+	"build": {
+		"dockerfile": "Dockerfile",
+		"args": {
+            "PROJECT_VERSION": "17.0", // Odoo version. Used during Docker build. Keep in sync with containerEnv
+        }
+	},
+
+	// Docker Compose options don't seem to work on PyCharm yet, so we use a dockerfile instead.
 //    "dockerComposeFile": "docker-compose.yml",
 //    "service": "devcontainer",
-
-	"build": { "dockerfile": "Dockerfile" },
 
     "workspaceFolder": "/workspace",
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
-//    "features": {
-//		"ghcr.io/devcontainers/features/python:1": {
-//			"installTools": true,
-//			"version": "3.8"
-//		}
-//	},
+//    "features": {},
 
 	"mounts": [
 		// Enable container access to SSH and AWS credentials in the container environment.
@@ -29,8 +34,6 @@
 		// Store ssh keys temporarily in the container using a tmpfs volume.
 		"type=tmpfs,destination=/home/vscode/.ssh",
 		"type=tmpfs,destination=/home/vscode/.aws",
-//		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/vscode/.ssh,readonly,type=bind",
-//		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.aws,target=/home/vscode/.aws,readonly,type=bind",
 		// Persist bash history between rebuilds.
 		"source=odoo-bashhistory,target=/commandhistory,type=volume",
 	],

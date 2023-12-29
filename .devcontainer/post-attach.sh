@@ -1,7 +1,14 @@
 #!/bin/bash
 
-# Startup Postgresql
-sudo /etc/init.d/postgresql start
+# Startup Postgresql if enabled.
+if [[ "$PROJECT_SKIP_POSTGRES" = "0" || "$PROJECT_SKIP_POSTGRES" = "false" ]]; then
+  sudo /etc/init.d/postgresql start
+fi
+
+# Startup Nginx if enabled.
+if [[ "$PROJECT_SKIP_NGINX" = "0" || "$PROJECT_SKIP_NGINX" = "false" ]]; then
+  nginx -g 'daemon on;'
+fi
 
 # Copy local host keys into tmpfs volumes on attachment.
 sudo cp -r /root/.ssh /home/vscode/
