@@ -84,7 +84,27 @@ P2=$!
 git clone --quiet https://github.com/odoo-ide/odoo-stubs.git --depth 1 --branch $version /workspace/odoo-stubs &
 P3=$!
 
+# Download the requirements file separately from the repo to speed up the process.
+version_url="https://raw.githubusercontent.com/odoo/odoo/"
+            version_url+=$version
+            version_url+="/requirements.txt"
+
+curl $version_url -o requirements.txt
+
+echo "Installing venv and requirements..."
+
+python3.8 -m venv /workspace/venv
+source /workspace/venv/bin/activate
+
+pip install --upgrade pip
+pip install wheel matplotlib pydevd
+if [ -f "/workspace/requirements.txt" ]; then
+  pip install -r /workspace/requirements.txt
+fi
+
 wait $P1 $P2 $P3
+
+/workspace/.devcontainer/extra-repos.sh
 
 if [ ! -f "/workspace/.idea/runConfigurations/odoo_bin_single.xml" ]; then
 echo "Creating debug configurations for Pycharm in ./.idea/runConfigurations/odoo_bin_single.xml"
@@ -179,15 +199,6 @@ cat >> /workspace/.idea/runConfigurations/odoo_bin_test.xml <<EOL
 EOL
 fi
 
-echo "Installing venv and requirements..."
-python3.8 -m venv /workspace/venv
-source /workspace/venv/bin/activate
-
-pip install --upgrade pip
-pip install wheel matplotlib pydevd
-if [ -f "/workspace/odoo/requirements.txt" ]; then
-  pip install -r /workspace/odoo/requirements.txt
-fi
 if [ -f "/workspace/project-addons/requirements.txt" ]; then
   pip install -r /workspace/project-addons/requirements.txt
 fi
