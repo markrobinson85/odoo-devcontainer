@@ -12,3 +12,7 @@ echo "Cloning extra repositories if specified..."
 #P2=$!
 #
 #wait $P1 $P2
+#
+#
+#pip install -r /workspace/project-addons/requirements.txt
+#
