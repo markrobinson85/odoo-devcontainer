@@ -9,6 +9,7 @@ project_dir=/workspace/
 ## Pass keys to container vscode user.
 ## ----------------------------------
 sudo chown -R vscode:vscode /workspace
+#sudo chown -R vscode:vscode /shared
 sudo cp -r /root/.ssh /home/vscode/
 #sudo cp -r /root/.aws /home/vscode/
 sudo chown -R vscode:vscode /home/vscode/.ssh

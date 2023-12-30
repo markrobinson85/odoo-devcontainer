@@ -26,7 +26,7 @@ echo "Cloning extra repositories if specified..."
 additional_addon_dirs=() #i.e ('custom-addons' 'project-addons' 'oca/web')
 
 # Loop through each .conf file in the configs/ directory
-for conf_file in configs/*.conf; do
+for conf_file in /workspace/configs/*.conf; do
     # Read the current addons_path from the conf file
     current_addons_path=$(grep "addons_path" "$conf_file" | cut -d= -f2- | xargs)
 

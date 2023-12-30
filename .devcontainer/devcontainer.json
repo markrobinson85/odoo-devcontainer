@@ -34,6 +34,13 @@
 		// Store ssh keys temporarily in the container using a tmpfs volume.
 		"type=tmpfs,destination=/home/vscode/.ssh",
 //		"type=tmpfs,destination=/home/vscode/.aws",
+
+		// Mount source code directories into a volume.
+//		"source=${localWorkspaceFolderBasename}-app,target=${containerWorkspaceFolder}/app,type=volume",
+//		"source=${localWorkspaceFolderBasename}-src,target=${containerWorkspaceFolder}/src,type=volume",
+//		"source=${localWorkspaceFolderBasename}-venv,target=${containerWorkspaceFolder}/venv,type=volume",
+//		"source=${localWorkspaceFolderBasename}-configs,target=${containerWorkspaceFolder}/configs,type=volume",
+
 		// Persist bash history between rebuilds.
 		"source=odoo-bashhistory,target=/commandhistory,type=volume",
 	],

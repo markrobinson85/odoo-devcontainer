@@ -11,9 +11,8 @@ Odoo by using a Docker container. When you use a devcontainer with PyCharm Profe
 container that allows you to interact with the file system "remotely" from your host machine.
 
 This devcontainer will take care of the pain of setting up a local Odoo development environment, including:
-- Cloning the Odoo repo
-- Cloning the Odoo enterprise repo (if you have access)
-- Installing Odoo/Python dependencies
+- Automatically pulling the Odoo and Enterprise (if you have access) repos
+- Automatically installing Python dependencies and creating a venv.
 - Installing Postgres and Nginx
 - Setting up run configurations in PyCharm for Odoo
 - Setting up database connections in PyCharm for Postgres
@@ -21,6 +20,28 @@ This devcontainer will take care of the pain of setting up a local Odoo developm
 You can use JetBrains Gateway or PyCharm Professional to build and run this devcontainer.
 
 For use on a project, I recommend forking or cloning this repo and making changes to suit your team's needs. 
+
+After building the devcontainer using PyCharm or JetBrains Gateway, you will have the following project structure:
+
+```bash
+workspace/
+ ├── .devcontainer/               # Dev container configuration files and scripts
+ │   └── devcontainer.json        # The devcontainer configuration.
+ │   └── Dockerfile               # The Dockerfile used to build the image.
+ │   └── pre-setup.sh             # Script that runs on container creation, pulls the repos, and installs pip dependencies.
+ │   └── extra-repos.sh           # Script for pulling additional repos needed for your project, like custom addons.
+ │   └── post-attach.sh           # Script that runs after attaching IDE to container, starts Postgres and Nginx.
+ │   └── pycharm-tools.sh         # External tools for PyCharm to run commands to terminate hanging processes.
+ ├── configs/
+ │   └── nginx.conf               # Nginx configuration file
+ │   └── odoo-server.conf         # Single worker configuration file
+ │   └── odoo-server-workers.conf # Multi worker configuration file
+ │   └── test-server.conf         # Config file for running unit tests
+ ├── enterprise/        # Enterprise repo (if you have access)
+ ├── odoo/              # Odoo repo
+ ├── project-addons/    # Your project's addons if you modify the .devcontainer/extra-repos.sh file
+ └── README.md          # You are here
+```
 
 ## Prerequisites
 - [Docker](https://www.docker.com/)
