@@ -142,10 +142,25 @@ EXCLUDE_DIRS=('venv')
 
 # To make the runConfiguration work, we need to ensure we use the correct module name,
 # which is the .iml file that PyCharm creates. We can pass this to the module's name attribute.
+if [ ! -f "/workspace/.idea/workspace.iml" ]; then
+## Create iml file if it does not exist.
+cat >> /workspace/.idea/workspace.iml <<EOL
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="PYTHON_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
+EOL
+fi
+
 iml_file=$(find .idea -name "*.iml")
 module_name=$(basename "$iml_file" .iml)
-
 echo "Project name: $module_name"
+
 # Function to add excludeFolder tag
 add_exclude_folder() {
     local folder=$1
