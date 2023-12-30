@@ -5,7 +5,7 @@ RUN apt update && apt install -y software-properties-common
 RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
 RUN apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 RUN add-apt-repository -y ppa:deadsnakes/ppa
-RUN apt install -y awscli unzip wget npm terraform=1.6.5-1
+RUN apt install -y unzip wget npm
 RUN apt install -y build-essential libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev libtiff5-dev libjpeg8-dev libopenjp2-7-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev libharfbuzz-dev libfribidi-dev libxcb1-dev libjpeg-dev libpq-dev
 RUN npm install -g less less-plugin-clean-css
 
