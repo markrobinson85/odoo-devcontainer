@@ -110,8 +110,5 @@ This approach avoids the noted I/O issues. More details can be found in [Visual 
 #### Extra Repos
 The extra-repos.sh file is used to clone additional repositories into the container.
 
-## Usage
-For use on a project, you'll want to update the extra-repos.sh file to include additional repos you need for your project. 
-
 ## License
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
