@@ -5,7 +5,7 @@
 	"containerEnv": {
 		"PROJECT_SHORT_NAME": "dev", // Shortcode for the project, used in config files and domain names (e.g., dev.odoo.test)
 		"PROJECT_SKIP_ENTERPRISE": "false", // Set to 'true' to skip cloning the Odoo enterprise repo in onCreateCommand
-		"PROJECT_VERSION": "17.0", // Odoo version. Used in runtime scripts. Keep in sync with build.args
+		"PROJECT_VERSION": "13.0", // Odoo version. Used in runtime scripts. Keep in sync with build.args
 		"PROJECT_SKIP_POSTGRES": "false", // Set to 'true' to skip starting Postgres in postAttachCommand
 		"PROJECT_SKIP_NGINX": "false", // Set to 'true' to skip starting Nginx in postAttachCommand
 		"PROJECT_KEEP_DOTGIT": "false", // Set to 'true' to keep the .git folder in the project directory, useful when customizing the dev container or using submodules.
@@ -13,7 +13,7 @@
 	"build": {
 		"dockerfile": "Dockerfile",
 		"args": {
-            "PROJECT_VERSION": "17.0", // Odoo version. Used during Docker build. Keep in sync with containerEnv
+            "PROJECT_VERSION": "13.0", // Odoo version. Used during Docker build. Keep in sync with containerEnv
         }
 	},
 

@@ -57,7 +57,7 @@ The container should have prepared a venv for you automatically, but you will ne
 3. Select one of the Run Configurations for Odoo.
 
 ![](.images/run_config_interpreter.png)
-3. Where you see <No interpreter>, click on it and select the interpreter you just configured.
+3. If you see <No interpreter>, click on it and select the interpreter you just configured.
 
 ### Configuring the Database Connection
 The container should have set up a database connection for you automatically, but there is a couple of manual steps 
@@ -70,6 +70,18 @@ required to get the database driver installed and password authenticated.
 4. The database drivers download and install very quickly.
 5. Right click again, and click Properties. 
 6. In the password field, enter the default password, odoo. Click Ok.
+
+### Unshallowing Odoo/Enterprise Repos
+To speed up the build of the devcontainer, the Odoo and Odoo Enterprise repos are cloned with a depth of 1. This means that only 
+the most recent commit is pulled. If you need the full history, you can unshallow these repos.
+
+Using the terminal in PyCharm, run the following commands (this will take a long time):
+```
+cd /workspace/odoo
+git fetch --unshallow
+cd /workspace/odoo-enterprise
+git fetch --unshallow
+```
 
 ## Customizing the Dev Container
 

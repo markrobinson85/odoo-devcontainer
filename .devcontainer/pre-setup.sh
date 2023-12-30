@@ -111,9 +111,9 @@ curl $version_url -o requirements.txt
 
 echo "Installing venv and requirements..."
 
-if [ "$PROJECT_VERSION" = "17.0" ] || [ "$PROJECT_VERSION" = "16.0" ] || [ "$PROJECT_VERSION" = "15.0" ]; then
+if [ "$PROJECT_VERSION" = "17.0" ] || [ "$PROJECT_VERSION" = "16.0" ] || [ "$PROJECT_VERSION" = "15.0" ] || [ "$PROJECT_VERSION" = "14.0" ]; then
   python3.10 -m venv /workspace/venv
-elif [ "$PROJECT_VERSION" = "14.0" ] || [ "$PROJECT_VERSION" = "13.0" ] || [ "$PROJECT_VERSION" = "12.0" ] || [ "$PROJECT_VERSION" = "11.0" ]; then
+elif [ "$PROJECT_VERSION" = "13.0" ] || [ "$PROJECT_VERSION" = "12.0" ] || [ "$PROJECT_VERSION" = "11.0" ]; then
   python3.8 -m venv /workspace/venv
 elif [ "$PROJECT_VERSION" = "9.0" ] || [ "$PROJECT_VERSION" = "10.0" ]; then
   virtualenv --python=/usr/bin/python2.7 /workspace/venv

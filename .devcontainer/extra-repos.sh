@@ -23,7 +23,7 @@ echo "Cloning extra repositories if specified..."
 
 # Define the array of additional addon directories that should be added to the odoo addons_path.
 # The conf files will be updated with these directories.
-additional_addon_dirs=('custom-addons' 'project-addons' 'oca/web')
+additional_addon_dirs=() #i.e ('custom-addons' 'project-addons' 'oca/web')
 
 # Loop through each .conf file in the configs/ directory
 for conf_file in configs/*.conf; do
