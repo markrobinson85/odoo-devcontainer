@@ -142,9 +142,9 @@ EXCLUDE_DIRS=('venv')
 
 # To make the runConfiguration work, we need to ensure we use the correct module name,
 # which is the .iml file that PyCharm creates. We can pass this to the module's name attribute.
-if [ ! -f "/workspace/.idea/workspace.iml" ]; then
+if [ ! -f "/workspace/.idea/odoo-workspace.iml" ]; then
 ## Create iml file if it does not exist.
-cat >> /workspace/.idea/workspace.iml <<EOL
+cat >> /workspace/.idea/odoo-workspace.iml <<EOL
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="PYTHON_MODULE" version="4">
   <component name="NewModuleRootManager">
