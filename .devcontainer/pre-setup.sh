@@ -123,8 +123,8 @@ elif [ "$PROJECT_VERSION" = "9.0" ] || [ "$PROJECT_VERSION" = "10.0" ]; then
 fi
 source /workspace/venv/bin/activate
 
-pip install --upgrade pip
-pip install wheel matplotlib pydevd
+pip install --quiet --upgrade pip
+pip install --quiet wheel matplotlib pydevd
 
 if [ -f "/workspace/requirements.txt" ]; then
   echo "Installing requirements.txt..."
