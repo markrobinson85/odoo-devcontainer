@@ -4,26 +4,29 @@ echo "Cloning extra repositories if specified..."
 ## ----------------------------------
 ## Use this script to add additional repos to the container.
 ## You can use P1, P2, P3, etc. to run multiple commands in parallel.
-## The $version will be set in pre-setup.sh script.
+## The $PROJECT_VERSION will be set as an environment variable in devcontainer.json.
 ##
 ## ----------------------------------
 
-#git clone --quiet git@github.com:org/project-addons.git --branch $version /workspace/project-addons &
+#git clone --quiet git@github.com:org/project-addons.git --branch $PROJECT_VERSION /workspace/project-addons &
 #EP1=$!
-#git clone --quiet git@github.com:org/other-addons.git --branch $version /workspace/other-addons &
+#git clone --quiet git@github.com:org/other-addons.git --branch $PROJECT_VERSION /workspace/other-addons &
 #EP2=$!
-#git clone --quiet git@github.com:oca/web.git --depth 1 --branch $version /workspace/oca/web &
+
+# Clone resources that can be shared between projects into the /shared mount, to reduce the number of volumes and duplicated source code.
+#git clone --quiet git@github.com:oca/web.git --depth 1 --branch $PROJECT_VERSION /shared/$PROJECT_VERSION/oca/web &
 #EP3=$!
 
+EXCLUDE_DIRS+=() # i.e ('res' 'restores') # Add to array of directories that should not be indexed by PyCharm. (venv is excluded by default)
+
+# Define the array of additional addon directories that should be added to the odoo addons_path.
+# The conf files will be updated with these directories.
+ADDITIONAL_ADDON_DIRS=() #i.e ('custom-addons' 'project-addons' 'oca/web')
 #wait ${EP1:-} ${EP2:-} ${EP3:-}
 
 #if [ -f "/workspace/project-addons/requirements.txt" ]; then
 #  pip install -r /workspace/project-addons/requirements.txt
 #fi
-
-# Define the array of additional addon directories that should be added to the odoo addons_path.
-# The conf files will be updated with these directories.
-additional_addon_dirs=() #i.e ('custom-addons' 'project-addons' 'oca/web')
 
 # Loop through each .conf file in the configs/ directory
 for conf_file in /workspace/configs/*.conf; do
@@ -34,7 +37,7 @@ for conf_file in /workspace/configs/*.conf; do
     new_addons_path="$current_addons_path"
 
     # Loop through the additional directories
-    for dir in "${additional_addon_dirs[@]}"; do
+    for dir in "${ADDITIONAL_ADDON_DIRS[@]}"; do
         # Check if the directory is already in the addons_path
         if ! echo "$current_addons_path" | grep -q "$dir"; then
             # Append the directory if it's not already present

@@ -9,13 +9,10 @@ project_dir=/workspace/
 ## Pass keys to container vscode user.
 ## ----------------------------------
 sudo chown -R vscode:vscode /workspace
-#sudo chown -R vscode:vscode /shared
+sudo chown -R vscode:vscode /shared
 sudo cp -r /root/.ssh /home/vscode/
-#sudo cp -r /root/.aws /home/vscode/
 sudo chown -R vscode:vscode /home/vscode/.ssh
 sudo chmod -R u=rw,go= /home/vscode/.ssh
-#sudo chown -R vscode:vscode /home/vscode/.aws
-#sudo chmod -R u=rw,go= /home/vscode/.aws
 sudo chmod 700 ~/.ssh/
 sudo mkdir -p ~/.cache/pip
 sudo chown -R vscode:vscode ~/.cache/pip
@@ -82,26 +79,31 @@ if [ $PROJECT_KEEP_DOTGIT != "true" ]; then
 
 fi
 echo "Cloning Odoo $PROJECT_VERSION, Enterprise $PROJECT_VERSION and odoo-stubs..."
-git clone --quiet git@github.com:odoo/odoo.git --depth 1 --branch $PROJECT_VERSION /workspace/odoo &
+git clone --quiet git@github.com:odoo/odoo.git --depth 1 --branch $PROJECT_VERSION /shared/$PROJECT_VERSION/odoo &
 P1=$!
 
 # Clone enterprise repo only if PROJECT_SKIP_ENTERPRISE is not set to 1 or true
 if [[ "$PROJECT_SKIP_ENTERPRISE" != "1" && "$PROJECT_SKIP_ENTERPRISE" != "true" ]]; then
-    git clone --quiet git@github.com:odoo/enterprise.git --depth 1 --branch $PROJECT_VERSION /workspace/enterprise &
+    git clone --quiet git@github.com:odoo/enterprise.git --depth 1 --branch $PROJECT_VERSION /shared/$PROJECT_VERSION/enterprise &
     P2=$!
 fi
 
-# Check if PROJECT_SKIP_ENTERPRISE is set to true
-if [[ "$PROJECT_SKIP_ENTERPRISE" == "true" ]]; then
-    # Loop through each .conf file in the configs/ directory
-    for conf_file in configs/*.conf; do
-        # Use sed to remove the 'enterprise,' portion from the addons_path
-        sed -i 's/addons_path = enterprise,/addons_path = /' "$conf_file"
-    done
-fi
-
-git clone --quiet https://github.com/odoo-ide/odoo-stubs.git --depth 1 --branch $PROJECT_VERSION /workspace/odoo-stubs &
+git clone --quiet https://github.com/odoo-ide/odoo-stubs.git --depth 1 --branch $PROJECT_VERSION /shared/$PROJECT_VERSION/odoo-stubs &
 P3=$!
+
+# Loop through each .conf file in the configs/ directory
+for conf_file in configs/*.conf; do
+    # Replace the $PROJECT_VERSION placeholder with the actual version
+    sed -i "s/\$PROJECT_VERSION/$PROJECT_VERSION/g" "$conf_file"
+
+    # Check if PROJECT_SKIP_ENTERPRISE is set to true
+    if [[ "$PROJECT_SKIP_ENTERPRISE" == "true" ]]; then
+      # Use sed to remove the 'enterprise,' portion from the addons_path
+#      sed -i 's/addons_path = enterprise,/addons_path = /' "$conf_file"
+      sed -i "s,/shared/[0-9]*\.[0-9]*/enterprise,,g" "$conf_file"
+      sed -i "s,addons_path = ,addons_path = /shared/[0-9]*\.[0-9]*/odoo/addons,g" "$conf_file"
+    fi
+done
 
 # Download the requirements file separately from the repo to speed up the process.
 version_url="https://raw.githubusercontent.com/odoo/odoo/"
@@ -135,13 +137,52 @@ fi
 
 wait $P1 ${P2:-} ${P3:-}
 
+EXCLUDE_DIRS=('venv')
 /workspace/.devcontainer/extra-repos.sh
 
 # To make the runConfiguration work, we need to ensure we use the correct module name,
 # which is the .iml file that PyCharm creates. We can pass this to the module's name attribute.
 iml_file=$(find .idea -name "*.iml")
 module_name=$(basename "$iml_file" .iml)
+
 echo "Project name: $module_name"
+# Function to add excludeFolder tag
+add_exclude_folder() {
+    local folder=$1
+    # Open the self-closed content tag if it is not already opened
+    if grep -q "<content url=\"file://\$MODULE_DIR\$\" />" "$iml_file"; then
+        sed -i 's|<content url="file://\$MODULE_DIR\$" />|<content url="file://\$MODULE_DIR\$">|' "$iml_file"
+        sed -i '/<content url="file:\/\/\$MODULE_DIR\$">/a \    </content>' "$iml_file"
+    fi
+
+    if ! grep -q "<excludeFolder url=\"file://\$MODULE_DIR$/$folder\" />" "$iml_file"; then
+        sed -i "/<content url=\"file:\/\/\$MODULE_DIR\$\">/a \      <excludeFolder url=\"file://\$MODULE_DIR$/$folder\" />" "$iml_file"
+    fi
+}
+
+# Iterate over each folder in the array and add it if not already present
+for folder in "${EXCLUDE_DIRS[@]}"; do
+    add_exclude_folder "$folder"
+done
+
+echo "IML file has been updated with excluded directories."
+
+# Add content tags if they do not exist and if PROJECT_SKIP_ENTERPRISE is not true
+if [ "$PROJECT_SKIP_ENTERPRISE" != "true" ]; then
+    if ! grep -q "<content url=\"file://\$MODULE_DIR$/../shared/$PROJECT_VERSION/enterprise\" />" "$iml_file"; then
+        sed -i "/<\/content>/a \    <content url=\"file://\$MODULE_DIR$/../shared/$PROJECT_VERSION/enterprise\" />" "$iml_file"
+    fi
+fi
+
+if ! grep -q "<content url=\"file://\$MODULE_DIR$/../shared/$PROJECT_VERSION/odoo\" />" "$iml_file"; then
+    sed -i "/<\/content>/a \    <content url=\"file://\$MODULE_DIR$/../shared/$PROJECT_VERSION/odoo\" />" "$iml_file"
+fi
+
+if ! grep -q "<content url=\"file://\$MODULE_DIR$/../shared/$PROJECT_VERSION/odoo-stubs\" />" "$iml_file"; then
+    sed -i "/<\/content>/a \    <content url=\"file://\$MODULE_DIR$/../shared/$PROJECT_VERSION/odoo-stubs\" />" "$iml_file"
+fi
+
+echo "IML file has been attached to shared directories."
 
 if [ ! -f "/workspace/.idea/runConfigurations/odoo_bin_single.xml" ]; then
 echo "Creating debug configurations for Pycharm in ./.idea/runConfigurations/odoo_bin_single.xml"

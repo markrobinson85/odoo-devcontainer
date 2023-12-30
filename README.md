@@ -24,23 +24,30 @@ For use on a project, I recommend forking or cloning this repo and making change
 After building the devcontainer using PyCharm or JetBrains Gateway, you will have the following project structure:
 
 ```bash
-workspace/
- ├── .devcontainer/               # Dev container configuration files and scripts
- │   └── devcontainer.json        # The devcontainer configuration.
- │   └── Dockerfile               # The Dockerfile used to build the image.
- │   └── pre-setup.sh             # Script that runs on container creation, pulls the repos, and installs pip dependencies.
- │   └── extra-repos.sh           # Script for pulling additional repos needed for your project, like custom addons.
- │   └── post-attach.sh           # Script that runs after attaching IDE to container, starts Postgres and Nginx.
- │   └── pycharm-tools.sh         # External tools for PyCharm to run commands to terminate hanging processes.
- ├── configs/
- │   └── nginx.conf               # Nginx configuration file
- │   └── odoo-server.conf         # Single worker configuration file
- │   └── odoo-server-workers.conf # Multi worker configuration file
- │   └── test-server.conf         # Config file for running unit tests
- ├── enterprise/        # Enterprise repo (if you have access)
- ├── odoo/              # Odoo repo
- ├── project-addons/    # Your project's addons if you modify the .devcontainer/extra-repos.sh file
- └── README.md          # You are here
+/workspace/  # Your main workspace
+     ├── .devcontainer/               # Dev container configuration files and scripts.
+     │   └── devcontainer.json        # The devcontainer configuration.
+     │   └── Dockerfile               # The Dockerfile used to build the image.
+     │   └── pre-setup.sh             # Script that runs on container creation, pulls the repos, and installs pip dependencies.
+     │   └── extra-repos.sh           # Script for pulling additional repos needed for your project, like custom addons.
+     │   └── post-attach.sh           # Script that runs after attaching IDE to container, starts Postgres and Nginx.
+     │   └── pycharm-tools.sh         # External tools for PyCharm to run commands to terminate hanging processes.
+     ├── configs/
+     │   └── nginx.conf               # Nginx configuration file.
+     │   └── odoo-server.conf         # Single worker configuration file.
+     │   └── odoo-server-workers.conf # Multi worker configuration file.
+     │   └── test-server.conf         # Config file for running unit tests .
+     ├── corp-addons/    # Your client's addons, automatically cloned if you include it in the .devcontainer/extra-repos.sh file.
+     └── README.md          # You are here
+/shared/    # Shared volume to reduce duplicate downloads of the massive Odoo repos across multiple projects.
+     ├── 17.0/           # If one of your devcontainers uses 17.0, a copy of the repos will be stored here.
+     │   │── odoo        # v17 of Odoo repo.
+     │   │── enterprise  # v17 of Odoo Enterprise repo.
+     │   └── oca         # v17 of various OCA repos.
+     └── 16.0/           # Dev container configuration files and scripts
+         │── odoo        # v16 of Odoo repo.
+         │── enterprise  # v16 of Odoo Enterprise repo.
+         └── oca         # v16 of various OCA repos.
 ```
 
 ## Prerequisites

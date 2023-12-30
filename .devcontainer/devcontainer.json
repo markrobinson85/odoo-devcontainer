@@ -3,7 +3,7 @@
 {
 	"name": "Odoo DevContainer", // Name your project here. For example, "Odoo - Client Name"
 	"containerEnv": {
-		"PROJECT_SHORT_NAME": "dev", // Shortcode for the project, used in config files and domain names (e.g., dev.odoo.test)
+		"PROJECT_SHORT_NAME": "dev", // Shortcode for the project. For example, "dev" or "clientname"
 		"PROJECT_SKIP_ENTERPRISE": "false", // Set to 'true' to skip cloning the Odoo enterprise repo in onCreateCommand
 		"PROJECT_VERSION": "13.0", // Odoo version. Used in runtime scripts. Keep in sync with build.args
 		"PROJECT_SKIP_POSTGRES": "false", // Set to 'true' to skip starting Postgres in postAttachCommand
@@ -16,7 +16,6 @@
             "PROJECT_VERSION": "13.0", // Odoo version. Used during Docker build. Keep in sync with containerEnv
         }
 	},
-
 	// Docker Compose options don't seem to work on PyCharm yet, so we use a dockerfile instead.
 //    "dockerComposeFile": "docker-compose.yml",
 //    "service": "devcontainer",
@@ -27,22 +26,30 @@
 //    "features": {},
 
 	"mounts": [
-		// Enable container access to SSH and AWS credentials in the container environment.
-//		"source=${localEnv:HOME}${localEnv:USERPROFILE},target=/home/host_user,readonly,type=bind",
+		// Enable container access to SSH credentials + other keys in the container environment.
 		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/root/.ssh,readonly,type=bind",
-//		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.aws,target=/root/.aws,readonly,type=bind",
+
 		// Store ssh keys temporarily in the container using a tmpfs volume.
 		"type=tmpfs,destination=/home/vscode/.ssh",
-//		"type=tmpfs,destination=/home/vscode/.aws",
 
-		// Mount source code directories into a volume.
-//		"target=${containerWorkspaceFolder}/app,type=volume",
-//		"target=${containerWorkspaceFolder}/src,type=volume",
-		"target=${containerWorkspaceFolder}/venv,type=volume",
-//		"source=${localWorkspaceFolderBasename}-configs,target=${containerWorkspaceFolder}/configs,type=volume",
-
+		// TODO: Document the following volumes and how to update the names.
+		// Persist workspace files in a volume, using project shortnames and versions.
+		"source=odoo-dev-13.0-venv,target=${containerWorkspaceFolder}/venv,type=volume",
+		// Persist Odoo filestore in volume, using project shortnames and versions.
+		"source=odoo-dev-13.0-filestore,target=/home/vscode/.local/Odoo,type=volume",
 		// Persist bash history between rebuilds.
-		"source=odoo-bashhistory,target=/commandhistory,type=volume",
+		"source=odoo-dev-13.0-bash,target=/commandhistory,type=volume",
+
+		// Shared resources between devcontainers (ie. v16.0, v17.0 can all exist in the same named volume)
+		"source=odoo-shared-resources,target=/shared,type=volume",
+
+		// Persist Postgres 15 database data.
+		"source=odoo-pg-15-etc,target=/etc/postgresql,type=volume",
+		"source=odoo-pg-15-log,target=/var/log/postgresql,type=volume",
+		"source=odoo-pg-15-data,target=/var/lib/postgresql,type=volume",
+
+		// Persist PIP cache between rebuilds.
+		"source=odoo-shared-pip-cache,target=/home/vscode/.cache/pip,type=volume",
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
