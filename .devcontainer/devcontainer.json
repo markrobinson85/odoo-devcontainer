@@ -1,7 +1,7 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
 {
-	"name": "Odoo Dev Container", // Name your project here. For example, "Odoo - Client Name"
+	"name": "Odoo DevContainer", // Name your project here. For example, "Odoo - Client Name"
 	"containerEnv": {
 		"PROJECT_SHORT_NAME": "dev", // Shortcode for the project, used in config files and domain names (e.g., dev.odoo.test)
 		"PROJECT_SKIP_ENTERPRISE": "false", // Set to 'true' to skip cloning the Odoo enterprise repo in onCreateCommand

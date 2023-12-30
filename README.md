@@ -4,20 +4,21 @@
 ![](.images/devcontainer-setup.png)
 
 ## Overview
-Odoo Dev Container is designed to streamline the setup process for developing Odoo modules using PyCharm Professional. 
-This container manages the complexities of setting up Odoo and its dependencies, including Postgres and Nginx, allowing 
-you to focus on development.
+"Works on my machine"
+
+Odoo DevContainer works to eliminate this problem by creating a portable and standardized development environment for 
+Odoo by using a Docker container. When you use a devcontainer with PyCharm Professional, an agent is installed into the 
+container that allows you to interact with the file system "remotely" from your host machine.
 
 This devcontainer will take care of the pain of setting up a local Odoo development environment, including:
 - Cloning the Odoo repo
 - Cloning the Odoo enterprise repo (if you have access)
-- Installing Python dependencies
-- Installing Odoo dependencies
+- Installing Odoo/Python dependencies
 - Installing Postgres and Nginx
 - Setting up run configurations in PyCharm for Odoo
 - Setting up database connections in PyCharm for Postgres
 
-You can use JetBrains Gateway or PyCharm Professional to build and run PyCharm in a container.
+You can use JetBrains Gateway or PyCharm Professional to build and run this devcontainer.
 
 For use on a project, I recommend forking or cloning this repo and making changes to suit your team's needs. 
 
@@ -29,7 +30,7 @@ For use on a project, I recommend forking or cloning this repo and making change
 
 ## Setup
 ### Building the Dev Container
-2. Open PyCharm Professional or JetBrains Gateway.
+1. Open PyCharm Professional or JetBrains Gateway.
 2. Navigate to Remote Development (If you are alreay inside a project, click File > Remote Development)
 3. Click the New Dev Container button.
 4. Select the Docker server you want to use, should default to your local Docker server.
@@ -110,5 +111,11 @@ This approach avoids the noted I/O issues. More details can be found in [Visual 
 #### Extra Repos
 The extra-repos.sh file is used to clone additional repositories into the container.
 
+## Roadmap
+- [ ] Fix issue in v17.0 where longpolling socket is not working.
+- [ ] Transition to using plain Ubuntu base image instead of Microsoft's devcontainer base image.
+- [ ] Implement "customizations" section to devcontainer.json. [BLOCKED]
+
 ## License
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+

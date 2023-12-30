@@ -8,14 +8,14 @@ echo "Cloning extra repositories if specified..."
 ##
 ## ----------------------------------
 
-#git clone --quiet git@github.com:org/project-addons.git --depth 1 --branch $version /workspace/project-addons &
-#P1=$!
-#git clone --quiet git@github.com:org/other-addons.git --depth 1 --branch $version /workspace/other-addons &
-#P2=$!
+#git clone --quiet git@github.com:org/project-addons.git --branch $version /workspace/project-addons &
+#EP1=$!
+#git clone --quiet git@github.com:org/other-addons.git --branch $version /workspace/other-addons &
+#EP2=$!
 #git clone --quiet git@github.com:oca/web.git --depth 1 --branch $version /workspace/oca/web &
-#P2=$!
+#EP3=$!
 
-#wait $P1 $P2
+#wait ${EP1:-} ${EP2:-} ${EP3:-}
 
 #if [ -f "/workspace/project-addons/requirements.txt" ]; then
 #  pip install -r /workspace/project-addons/requirements.txt

@@ -41,11 +41,11 @@ RUN /etc/init.d/postgresql start && \
 
 USER root
 RUN apt-get install -y nginx
+RUN rm /etc/nginx/sites-enabled/default
 VOLUME ["/var/lib/nginx/cache/dev", "/var/log/nginx"]
 
 USER vscode
 # Setup volume for Odoo data.
-RUN mkdir -p /home/vscode/.local/Odoo
 VOLUME /home/vscode/.local/Odoo
 
 ## -- TEMPORARY --
