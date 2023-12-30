@@ -30,10 +30,10 @@
 		// Enable container access to SSH and AWS credentials in the container environment.
 //		"source=${localEnv:HOME}${localEnv:USERPROFILE},target=/home/host_user,readonly,type=bind",
 		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/root/.ssh,readonly,type=bind",
-		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.aws,target=/root/.aws,readonly,type=bind",
+//		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.aws,target=/root/.aws,readonly,type=bind",
 		// Store ssh keys temporarily in the container using a tmpfs volume.
 		"type=tmpfs,destination=/home/vscode/.ssh",
-		"type=tmpfs,destination=/home/vscode/.aws",
+//		"type=tmpfs,destination=/home/vscode/.aws",
 		// Persist bash history between rebuilds.
 		"source=odoo-bashhistory,target=/commandhistory,type=volume",
 	],
