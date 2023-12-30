@@ -44,9 +44,11 @@ The container should have prepared a venv for you automatically, but you will ne
 1. If in the lower right corner you see <No interpreter>, click on it.
 
 ![](.images/add_local_interpreter.png)
+
 2. Click Add new interpreter > Add Local Interpreter.
 
 ![](.images/select_existing_venv.png)
+
 3. On the Add Python Interpreter screen, select Existing > Click Ok.
 
 #### Configuring the Run Configurations
@@ -57,6 +59,7 @@ The container should have prepared a venv for you automatically, but you will ne
 3. Select one of the Run Configurations for Odoo.
 
 ![](.images/run_config_interpreter.png)
+
 3. If you see <No interpreter>, click on it and select the interpreter you just configured.
 
 ### Configuring the Database Connection
@@ -66,6 +69,7 @@ required to get the database driver installed and password authenticated.
 2. From the database pull out, you should see a connection to the Postgres database.
 
 ![](.images/install-db-drivers.png)
+
 3. Right click on the connection and click Download Driver Files.
 4. The database drivers download and install very quickly.
 5. Right click again, and click Properties. 
@@ -90,6 +94,7 @@ directory.
 2. **Add Custom Repositories**: Include your custom repositories in the _./devcontainer/extra-repos.sh_ file.
 
 ![](.images/e9006d3a.png)
+
 3. **Testing Customizations**: In PyCharm, when you edit the devcontainer.json file, a block icon appears near the 
 opening curly bracket. Click this to access customization options. Select **_Create Container and Mount Sources_** for PyCharm 
 to rebuild the container with your changes, using a bind mount to include the current project directory.
