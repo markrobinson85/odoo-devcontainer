@@ -127,12 +127,14 @@ pip install --upgrade pip
 pip install wheel matplotlib pydevd
 
 if [ -f "/workspace/requirements.txt" ]; then
-  pip install -r /workspace/requirements.txt
+  echo "Installing requirements.txt..."
+  pip install --quiet -r /workspace/requirements.txt
 fi
 
 if [ "$PROJECT_VERSION" = "10.0" ] || [ "$PROJECT_VERSION" = "9.0" ]; then
-  pip uninstall -y psycopg2
-  pip install psycopg2-binary
+  echo "Installing psycopg-binary..."
+  pip uninstall --quiet -y psycopg2
+  pip install -quiet psycopg2-binary
 fi
 
 wait $P1 ${P2:-} ${P3:-}
