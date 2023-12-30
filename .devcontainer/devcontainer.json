@@ -36,9 +36,9 @@
 //		"type=tmpfs,destination=/home/vscode/.aws",
 
 		// Mount source code directories into a volume.
-//		"source=${localWorkspaceFolderBasename}-app,target=${containerWorkspaceFolder}/app,type=volume",
-//		"source=${localWorkspaceFolderBasename}-src,target=${containerWorkspaceFolder}/src,type=volume",
-//		"source=${localWorkspaceFolderBasename}-venv,target=${containerWorkspaceFolder}/venv,type=volume",
+//		"target=${containerWorkspaceFolder}/app,type=volume",
+//		"target=${containerWorkspaceFolder}/src,type=volume",
+		"target=${containerWorkspaceFolder}/venv,type=volume",
 //		"source=${localWorkspaceFolderBasename}-configs,target=${containerWorkspaceFolder}/configs,type=volume",
 
 		// Persist bash history between rebuilds.

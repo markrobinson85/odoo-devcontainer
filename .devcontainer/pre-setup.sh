@@ -19,7 +19,7 @@ sudo chmod -R u=rw,go= /home/vscode/.ssh
 sudo chmod 700 ~/.ssh/
 sudo mkdir -p ~/.cache/pip
 sudo chown -R vscode:vscode ~/.cache/pip
-sudo ln -f /workspace/configs/nginx.conf /etc/nginx/sites-enabled/odoo-devcontainer.conf
+sudo ln -s /workspace/configs/nginx.conf /etc/nginx/sites-enabled/odoo-devcontainer.conf
 
 mkdir /workspace/.idea
 mkdir /workspace/.idea/runConfigurations

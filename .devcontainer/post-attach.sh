@@ -7,7 +7,7 @@ fi
 
 # Startup Nginx if enabled.
 if [[ "$PROJECT_SKIP_NGINX" = "0" || "$PROJECT_SKIP_NGINX" = "false" ]]; then
-  nginx -g 'daemon on;'
+  sudo nginx -g 'daemon on;'
 fi
 
 # Copy local host keys into tmpfs volumes on attachment.
