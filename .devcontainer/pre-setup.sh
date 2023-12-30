@@ -182,20 +182,21 @@ done
 
 echo "IML file has been updated with excluded directories."
 
-# Add content tags if they do not exist and if PROJECT_SKIP_ENTERPRISE is not true
-if [ "$PROJECT_SKIP_ENTERPRISE" != "true" ]; then
-    if ! grep -q "<content url=\"file:///shared/$PROJECT_VERSION/enterprise\" />" "$iml_file"; then
-        sed -i "/<\/content>/a \    <content url=\"file:///shared/$PROJECT_VERSION/enterprise\" />" "$iml_file"
+# Function to add a content tag before the first content tag
+add_content_tag() {
+    local url=$1
+    if ! grep -q "<content url=\"$url\" />" "$iml_file"; then
+        # Add the new content tag before MODULE_DIR content tag
+        sed -i "/<content url=\"file:\/\/\$MODULE_DIR\$\">/i \    <content url=\"$url\" />" "$iml_file"
     fi
-fi
+}
 
-if ! grep -q "<content url=\"file:///shared/$PROJECT_VERSION/odoo\" />" "$iml_file"; then
-    sed -i "/<\/content>/a \    <content url=\"file:///shared/$PROJECT_VERSION/odoo\" />" "$iml_file"
+# Check and add content tags
+if [ "$PROJECT_SKIP_ENTERPRISE" != "true" ]; then
+    add_content_tag "file:///shared/$PROJECT_VERSION/enterprise"
 fi
-
-if ! grep -q "<content url=\"file:///shared/$PROJECT_VERSION/odoo-stubs\" />" "$iml_file"; then
-    sed -i "/<\/content>/a \    <content url=\"file:///shared/$PROJECT_VERSION/odoo-stubs\" />" "$iml_file"
-fi
+add_content_tag "file:///shared/$PROJECT_VERSION/odoo"
+add_content_tag "file:///shared/$PROJECT_VERSION/odoo-stubs"
 
 echo "IML file has been attached to shared directories."
 
