@@ -32,6 +32,8 @@ add_content_tag() {
     fi
 }
 
+sleep 30
+
 # Check and add content tags
 if [ "$PROJECT_SKIP_ENTERPRISE" != "true" ]; then
     add_content_tag "file:///shared/$PROJECT_VERSION/enterprise"
