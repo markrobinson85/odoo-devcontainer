@@ -140,6 +140,7 @@ fi
 wait $P1 ${P2:-} ${P3:-}
 
 EXCLUDE_DIRS=('venv')
+sudo chmod +x /workspace/.devcontainer/extra-repos.sh
 /workspace/.devcontainer/extra-repos.sh
 
 # To make the runConfiguration work, we need to ensure we use the correct module name,
@@ -166,7 +167,7 @@ cat >> /workspace/.idea/modules.xml <<EOL
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/workspace.iml" filepath="$PROJECT_DIR$/.idea/workspace.iml" />
+      <module fileurl="file://\$PROJECT_DIR\$/.idea/workspace.iml" filepath="\$PROJECT_DIR\$/.idea/workspace.iml" />
     </modules>
   </component>
 </project>
