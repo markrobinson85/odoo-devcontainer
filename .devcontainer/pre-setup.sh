@@ -18,8 +18,8 @@ sudo mkdir -p ~/.cache/pip
 sudo chown -R vscode:vscode ~/.cache/pip
 sudo ln -s /workspace/configs/nginx.conf /etc/nginx/sites-enabled/odoo-devcontainer.conf
 
-mkdir /workspace/.idea
-mkdir /workspace/.idea/runConfigurations
+mkdir -p /workspace/.idea
+mkdir -p /workspace/.idea/runConfigurations
 
 # To speed up the process, we use a depth of 1 to pull a shallow clone of the repo.
 # Then we update the remote fetch to include the branch we want to use.
