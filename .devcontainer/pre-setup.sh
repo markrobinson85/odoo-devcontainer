@@ -184,17 +184,17 @@ echo "IML file has been updated with excluded directories."
 
 # Add content tags if they do not exist and if PROJECT_SKIP_ENTERPRISE is not true
 if [ "$PROJECT_SKIP_ENTERPRISE" != "true" ]; then
-    if ! grep -q "<content url=\"file://\$MODULE_DIR$/../shared/$PROJECT_VERSION/enterprise\" />" "$iml_file"; then
-        sed -i "/<\/content>/a \    <content url=\"file://\$MODULE_DIR$/../shared/$PROJECT_VERSION/enterprise\" />" "$iml_file"
+    if ! grep -q "<content url=\"file:///shared/$PROJECT_VERSION/enterprise\" />" "$iml_file"; then
+        sed -i "/<\/content>/a \    <content url=\"file:///shared/$PROJECT_VERSION/enterprise\" />" "$iml_file"
     fi
 fi
 
-if ! grep -q "<content url=\"file://\$MODULE_DIR$/../shared/$PROJECT_VERSION/odoo\" />" "$iml_file"; then
-    sed -i "/<\/content>/a \    <content url=\"file://\$MODULE_DIR$/../shared/$PROJECT_VERSION/odoo\" />" "$iml_file"
+if ! grep -q "<content url=\"file:///shared/$PROJECT_VERSION/odoo\" />" "$iml_file"; then
+    sed -i "/<\/content>/a \    <content url=\"file:///shared/$PROJECT_VERSION/odoo\" />" "$iml_file"
 fi
 
-if ! grep -q "<content url=\"file://\$MODULE_DIR$/../shared/$PROJECT_VERSION/odoo-stubs\" />" "$iml_file"; then
-    sed -i "/<\/content>/a \    <content url=\"file://\$MODULE_DIR$/../shared/$PROJECT_VERSION/odoo-stubs\" />" "$iml_file"
+if ! grep -q "<content url=\"file:///shared/$PROJECT_VERSION/odoo-stubs\" />" "$iml_file"; then
+    sed -i "/<\/content>/a \    <content url=\"file:///shared/$PROJECT_VERSION/odoo-stubs\" />" "$iml_file"
 fi
 
 echo "IML file has been attached to shared directories."
