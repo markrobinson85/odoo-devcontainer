@@ -4,6 +4,7 @@
 ## VARIABLES
 ## ----------------------------------
 project_dir=$PROJECT_WORKSPACE_FOLDER
+pids=() # Store background process IDs
 
 ## ----------------------------------
 #  FUNCTIONS - TODO: Refactor into Python script?
@@ -66,6 +67,21 @@ for conf_file in configs/*.conf; do
     sed -i "s|addons_path.*|addons_path = ${new_addons_path}|" "$conf_file"
 
 done
+}
+
+clone_or_pull_repo() {
+    local repo_url=$1
+    local target_dir=$2
+    local clone_args=${@:3}
+
+    if [ -d "$target_dir/.git" ]; then
+        echo "Repository exists. Pulling latest changes in $target_dir"
+        git -C "$target_dir" pull &
+    else
+        echo "Cloning repository into $target_dir"
+        git clone $clone_args "$repo_url" "$target_dir" &
+    fi
+    pids+=($!)
 }
 
 ## ----------------------------------
@@ -142,18 +158,15 @@ if [ $PROJECT_KEEP_DOTGIT != "true" ]; then
 
 fi
 
-echo "Cloning Odoo $PROJECT_VERSION, Enterprise $PROJECT_VERSION and odoo-stubs..."
-git clone --quiet git@github.com:odoo/odoo.git --depth 1 --branch $PROJECT_VERSION /shared/$PROJECT_VERSION/odoo &
-P1=$!
+
+# Clone or pull the repo
+clone_or_pull_repo "git@github.com:odoo/odoo.git" "/shared/$PROJECT_VERSION/odoo" --depth 1 --branch $PROJECT_VERSION
 
 # Clone enterprise repo only if PROJECT_SKIP_ENTERPRISE is not set to 1 or true
 if [[ "$PROJECT_SKIP_ENTERPRISE" != "1" && "$PROJECT_SKIP_ENTERPRISE" != "true" ]]; then
-    git clone --quiet git@github.com:odoo/enterprise.git --depth 1 --branch $PROJECT_VERSION /shared/$PROJECT_VERSION/enterprise &
-    P2=$!
+    clone_or_pull_repo "git@github.com:odoo/enterprise.git" "/shared/$PROJECT_VERSION/enterprise" --depth 1 --branch $PROJECT_VERSION
 fi
-
-git clone --quiet https://github.com/odoo-ide/odoo-stubs.git --depth 1 --branch $PROJECT_VERSION /shared/$PROJECT_VERSION/odoo-stubs &
-P3=$!
+clone_or_pull_repo "git@github.com:odoo-ide/odoo-stubs.git" "/shared/$PROJECT_VERSION/odoo-stubs" --depth 1 --branch $PROJECT_VERSION
 
 # Download the requirements file separately from the repo to speed up the process.
 version_url="https://raw.githubusercontent.com/odoo/odoo/"
@@ -186,8 +199,6 @@ if [ "$PROJECT_VERSION" = "10.0" ] || [ "$PROJECT_VERSION" = "9.0" ]; then
   pip uninstall --quiet -y psycopg2
   pip install -quiet psycopg2-binary
 fi
-
-wait $P1 ${P2:-} ${P3:-}
 
 # Check for existing .iml file
 iml_file=$(find .idea -name "*.iml")
@@ -225,10 +236,15 @@ cat >> $project_dir/.idea/modules.xml <<EOL
 EOL
 fi
 
-EXCLUDE_DIRS=('venv') # Directories that should not be indexed by PyCharm.
+EXCLUDE_DIRS=('venv' 'sql' 'utils') # Directories that should not be indexed by PyCharm.
 SHARED_DIRS=('enterprise' 'odoo' 'odoo-stubs') # Directories that should be shared between projects.
 ADDITIONAL_ADDON_DIRS=() # Additional addon directories.
 source $project_dir/.devcontainer/extra-repos.sh
+
+# Wait for all background processes to finish
+for pid in "${pids[@]}"; do
+    wait $pid
+done
 
 # Update config files with addons_path from ADDITIONAL_ADDON_DIRS, and set versions for addons.
 update_config_files
@@ -268,7 +284,7 @@ cat >> $project_dir/.idea/runConfigurations/odoo_bin_single.xml <<EOL
     <option name="ADD_CONTENT_ROOTS" value="true" />
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-    <option name="SCRIPT_NAME" value="\$PROJECT_DIR\$/odoo/odoo-bin" />
+    <option name="SCRIPT_NAME" value="/shared/$PROJECT_VERSION/odoo/odoo-bin" />
     <option name="PARAMETERS" value="--config=./configs/odoo-server.conf" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <option name="EMULATE_TERMINAL" value="false" />
@@ -298,7 +314,7 @@ cat >> $project_dir/.idea/runConfigurations/odoo_bin.xml <<EOL
     <option name="ADD_CONTENT_ROOTS" value="true" />
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-    <option name="SCRIPT_NAME" value="\$PROJECT_DIR\$/odoo/odoo-bin" />
+    <option name="SCRIPT_NAME" value="/shared/$PROJECT_VERSION/odoo/odoo-bin" />
     <option name="PARAMETERS" value="--config=./configs/odoo-server-workers.conf" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <option name="EMULATE_TERMINAL" value="false" />
@@ -328,7 +344,7 @@ cat >> $project_dir/.idea/runConfigurations/odoo_bin_test.xml <<EOL
     <option name="ADD_CONTENT_ROOTS" value="true" />
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-    <option name="SCRIPT_NAME" value="\$PROJECT_DIR\$/odoo/odoo-bin" />
+    <option name="SCRIPT_NAME" value="/shared/$PROJECT_VERSION/odoo/odoo-bin" />
     <option name="PARAMETERS" value="--config=./configs/test-server.conf -i account --test-tags account -d test_db --no-http --stop-after-init" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <option name="EMULATE_TERMINAL" value="false" />
