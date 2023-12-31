@@ -19,7 +19,3 @@ sudo chmod -R u=rw,go= /home/vscode/.ssh
 #sudo chmod -R u=rw,go= /home/vscode/.aws
 sudo chmod 700 ~/.ssh/
 
-#iml_file=$(find .idea -name "*.iml")
-#module_name=$(basename "$iml_file" .iml)
-#echo "Project name: $module_name"
-#
