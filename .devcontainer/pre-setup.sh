@@ -130,12 +130,6 @@ if [ $PROJECT_KEEP_DOTGIT != "true" ]; then
               # Handle the situation for unpushed commits
           fi
 
-          # Check if the local branch is behind its remote counterpart
-          if git log --oneline $branch..$remote | grep -q '.'; then
-              echo "Local branch $branch is behind its remote counterpart $remote."
-              repo_ready_for_removal=0
-              # Handle the situation for behind remote
-          fi
       fi
   done
 
@@ -157,7 +151,6 @@ if [ $PROJECT_KEEP_DOTGIT != "true" ]; then
   fi
 
 fi
-
 
 # Clone or pull the repo
 clone_or_pull_repo "git@github.com:odoo/odoo.git" "/shared/$PROJECT_VERSION/odoo" --depth 1 --branch $PROJECT_VERSION
@@ -197,7 +190,7 @@ fi
 if [ "$PROJECT_VERSION" = "10.0" ] || [ "$PROJECT_VERSION" = "9.0" ]; then
   echo "Installing psycopg-binary..."
   pip uninstall --quiet -y psycopg2
-  pip install -quiet psycopg2-binary
+  pip install --quiet psycopg2-binary
 fi
 
 # Check for existing .iml file
