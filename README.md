@@ -38,6 +38,8 @@ After building the devcontainer using PyCharm or JetBrains Gateway, you will hav
      │   └── odoo-server-workers.conf # Multi worker configuration file.
      │   └── test-server.conf         # Config file for running unit tests .
      ├── corp-addons/    # Your client's addons, automatically cloned if you include it in the .devcontainer/extra-repos.sh file.
+     ├── sql/            # Store re-usable SQL queries here.
+     ├── utils/          # Project specific utilities/scripts.
      └── README.md          # You are here
 /shared/    # Shared volume to reduce duplicate downloads of the massive Odoo repos across multiple projects.
      ├── 17.0/           # If one of your devcontainers uses 17.0, a copy of the repos will be stored here.
