@@ -1,0 +1,15 @@
+#!/bin/bash
+# Execute the process-killing script
+# Get the process IDs (PIDs) of processes containing "odoo-server", which will include debuggers and running the process without debugging.
+pids=$(ps aux | grep -ie 'odoo-server' | awk '{print $2}')
+
+# Terminate each process using SIGKILL
+for pid in $pids; do
+    if kill -0 "$pid" 2>/dev/null; then
+        kill -9 "$pid"
+        echo "Terminated process with PID $pid"
+    else
+        echo "Process with PID $pid no longer exists"
+    fi
+done
+exit 0
