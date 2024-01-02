@@ -1,0 +1,24 @@
+#!/bin/bash
+# Unshallow the shared repos
+
+echo "The shared repos are initially cloned with a depth of 1 to speed up "
+echo "the build process and to take up less space. This command will unshallow "
+echo "these shared repos so that they have their full git histories."
+echo ""
+echo "This will take a while to complete, and will take up much more storage space."
+read -p "Unshallow the shared repos? [y/n] " unshallow_choice
+
+if [[ $unshallow_choice == "y"  ]]
+then
+  echo "Unshallowing Odoo $PROJECT_VERSION repo"
+  cd /shared/$PROJECT_VERSION/odoo
+  git fetch --unshallow
+  if [[ "$PROJECT_SKIP_ENTERPRISE" != "1" && "$PROJECT_SKIP_ENTERPRISE" != "true" ]]; then
+    echo "Unshallowing Enterprise $PROJECT_VERSION repo"
+    cd /shared/$PROJECT_VERSION/enterprise
+    git fetch --unshallow
+  fi
+  echo "Finished unshallowing repos."
+else
+  echo "Skiped unshallowing."
+fi
