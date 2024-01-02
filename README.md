@@ -37,7 +37,8 @@ After building the devcontainer using PyCharm or JetBrains Gateway, you will hav
      │   └── odoo-server.conf         # Single worker configuration file.
      │   └── odoo-server-workers.conf # Multi worker configuration file.
      │   └── test-server.conf         # Config file for running unit tests .
-     ├── corp-addons/    # Your client's addons, automatically cloned if you include it in the .devcontainer/extra-repos.sh file.
+     ├── client-addons/  # Your client's addons, automatically cloned if you include it in the .devcontainer/extra-repos.sh file.
+     ├── restores/       # Store database backups here.
      ├── sql/            # Store re-usable SQL queries here.
      ├── utils/          # Project specific utilities/scripts.
      └── README.md          # You are here
@@ -143,9 +144,14 @@ This approach avoids the noted I/O issues. More details can be found in [Visual 
 #### Extra Repos
 The extra-repos.sh file is used to clone additional repositories into the container.
 
+## [Utilities](utils/UTILS.md)
+
+A few utilities are bundled and included in the devcontainer PATH. See [UTILS.md](utils/UTILS.md) for more details.
+
 ## Roadmap
 - [ ] Fix issue in v17.0 where longpolling socket is not working.
 - [ ] Transition to using plain Ubuntu base image instead of Microsoft's devcontainer base image.
+- [ ] Add utilities for cleaning up databases and filestores.
 - [ ] Implement "customizations" section to devcontainer.json. [BLOCKED]
 
 ## License
