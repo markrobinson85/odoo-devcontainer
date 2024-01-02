@@ -8,7 +8,7 @@
 		"PROJECT_VERSION": "13.0", // Odoo version. Used in runtime scripts. Keep in sync with build.args
 		"PROJECT_SKIP_POSTGRES": "false", // Set to 'true' to skip starting Postgres in postAttachCommand
 		"PROJECT_SKIP_NGINX": "false", // Set to 'true' to skip starting Nginx in postAttachCommand
-		"PROJECT_KEEP_DOTGIT": "false", // Set to 'true' to keep the .git folder in the project directory, useful when customizing the dev container or using submodules.
+		"PROJECT_KEEP_DOTGIT": "true", // Set to 'true' to keep the .git folder in the project directory, useful when customizing the dev container or using submodules.
 		"PROJECT_WORKSPACE_FOLDER": "/workspace", // The workspace folder inside the container. Keep in sync with workspaceFolder
 	},
 	"build": {
@@ -29,6 +29,9 @@
 	"mounts": [
 		// Enable container access to SSH credentials + other keys in the container environment.
 		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/root/.ssh,readonly,type=bind",
+
+		// Enable container access to the local user's ContainerShare directory to enable passing files between host and container.
+		// "source=${localEnv:HOME}${localEnv:USERPROFILE}/ContainerShare,target=/home/vscode/containershare,type=bind",
 
 		// Store ssh keys temporarily in the container using a tmpfs volume.
 		"type=tmpfs,destination=/home/vscode/.ssh",
@@ -63,7 +66,7 @@
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"onCreateCommand": "bash /workspace/.devcontainer/pre-setup.sh",
-	"postAttachCommand": "bash /workspace/.devcontainer/post-attach.sh && source /workspace/venv/bin/activate",
+	"postAttachCommand": "bash /workspace/.devcontainer/post-attach.sh",
 
 	// Configure tool-specific properties.
 	// "customizations": {},

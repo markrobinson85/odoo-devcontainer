@@ -41,10 +41,10 @@ done
 # Install requirements for the OCA repos.
 for repo in "${OCA_REPOS[@]}"; do
     if [ -f "/shared/$PROJECT_VERSION/oca/$repo/requirements.txt" ]; then
-      pip install -r /shared/$PROJECT_VERSION/oca/$repo/requirements.txt
+      pip install --quiet -r /shared/$PROJECT_VERSION/oca/$repo/requirements.txt
     fi
 done
 
 #if [ -f "$PROJECT_WORKSPACE_FOLDER/project-addons/requirements.txt" ]; then
-#  pip install -r $PROJECT_WORKSPACE_FOLDER/project-addons/requirements.txt
+#  pip install --quiet -r $PROJECT_WORKSPACE_FOLDER/project-addons/requirements.txt
 #fi

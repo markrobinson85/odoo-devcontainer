@@ -1,0 +1,36 @@
+#!/bin/bash
+
+: <<'END'
+Call this script in another script to get the values
+for the database you are currently using.
+
+source "get_db_config"
+
+END
+
+# Specify the path to your configuration file
+conf_file="$PROJECT_WORKSPACE_FOLDER/configs/odoo-server.conf"
+
+# Function to get a configuration value
+get_conf_value() {
+    local key=$1
+    local file=$2
+    grep "^$key" "$file" | cut -d= -f2 | xargs
+}
+
+# Extract the values
+db_host=$(get_conf_value "db_host" "$conf_file")
+db_user=$(get_conf_value "db_user" "$conf_file")
+db_password=$(get_conf_value "db_password" "$conf_file")
+db_port=$(get_conf_value "db_port" "$conf_file")
+
+# Print the values
+export PGHOST=$db_host
+export PGPASSWORD=$db_password
+export PGUSER=$db_user
+export PGPORT=$db_port
+
+#echo "export PGHOST=$db_host"
+#echo "export PGPASSWORD=$db_password"
+#echo "export PGUSER=$db_user"
+#echo "export PGPORT=$db_port"
