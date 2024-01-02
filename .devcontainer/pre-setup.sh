@@ -229,7 +229,7 @@ cat >> $project_dir/.idea/modules.xml <<EOL
 EOL
 fi
 
-EXCLUDE_DIRS=('venv' 'sql' 'utils', 'restores', 'docs') # Directories that should not be indexed by PyCharm.
+EXCLUDE_DIRS=('venv' 'sql' 'utils' 'restores' 'docs') # Directories that should not be indexed by PyCharm.
 SHARED_DIRS=('enterprise' 'odoo' 'odoo-stubs') # Directories that should be shared between projects.
 ADDITIONAL_ADDON_DIRS=() # Additional addon directories.
 source $project_dir/.devcontainer/extra-repos.sh
