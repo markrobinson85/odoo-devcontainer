@@ -1,7 +1,7 @@
 
 # Odoo Dev Container
 
-![](.images/devcontainer-setup.png)
+![](.images/devcontainer-setup-1.png)
 
 ## Overview
 "Works on my machine"
